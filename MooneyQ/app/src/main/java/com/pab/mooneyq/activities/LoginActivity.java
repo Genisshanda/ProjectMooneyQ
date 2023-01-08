@@ -1,21 +1,12 @@
 package com.pab.mooneyq.activities;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.pab.mooneyq.R;
 import com.pab.mooneyq.databinding.ActivityLoginBinding;
 import com.pab.mooneyq.models.Login;
@@ -36,9 +27,6 @@ public class LoginActivity extends BaseActivity {
     private final ApiEndpoint api = ApiService.endpoint();
     private String email, password;
 
-    private FirebaseAuth mAuth;
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,39 +40,6 @@ public class LoginActivity extends BaseActivity {
         pref = new PreferencesManager(this);
 
         setupListener();
-
-        mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-
-        binding.tvLupaSandi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                email = binding.etEmail.getText().toString();
-
-                if (TextUtils.isEmpty(email)) {
-                    binding.etEmail.setError("Email harus diisi!");
-                } else {
-                    progressDialog.setTitle("Sending Email");
-                    progressDialog.show();
-                    mAuth.sendPasswordResetEmail(email)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    progressDialog.cancel();
-                                    FancyToast.makeText(LoginActivity.this, "Reset kata sandi sudah dikirimkan ke email Anda!"
-                                            , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.cancel();
-                                    FancyToast.makeText(LoginActivity.this, e.getMessage()
-                                            , FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();
-                                }
-                            });
-                }
-            }
-        });
     }
 
     @Override
@@ -97,7 +52,6 @@ public class LoginActivity extends BaseActivity {
         binding.btnMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginUser();
                 if (isRequired()) {
                     showProgress(true);
                     api.login(
@@ -125,6 +79,7 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
         binding.tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,33 +87,6 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
-    }
-
-    private void loginUser() {
-        email = binding.etEmail.getText().toString();
-        password = binding.etPassword.getText().toString();
-
-        if (TextUtils.isEmpty(email)) {
-            binding.etEmail.setError("Email tidak boleh kosong!");
-            binding.etEmail.requestFocus();
-        } else if (TextUtils.isEmpty(password)) {
-            binding.etPassword.setError("Kata sandi tidak boleh kosong!");
-            binding.etPassword.requestFocus();
-        } else {
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        FancyToast.makeText(LoginActivity.this, "Login telah berhasil!"
-                                , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    } else {
-                        FancyToast.makeText(LoginActivity.this, "Login gagal: " + task.getException().getMessage()
-                                , FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();
-                    }
-                }
-            });
-        }
     }
 
     private Boolean isRequired() {

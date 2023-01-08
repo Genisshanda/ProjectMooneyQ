@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MooneyQ</string>
+    <string name="note">Kata sandi harus memiliki kombinasi huruf besar, huruf kecil, dan angka untuk keamanan anda.</string>
+    <string name="ket">MooneyQ adalah perusahaan catatan keuangan yang diawasi oleh Otoritas Jasa Keuangan</string>
+    <string name="ket_start">Mencatat dan mengatur keuangan bulanan, semua bisa di MooneyQ!</string>
 </resources>

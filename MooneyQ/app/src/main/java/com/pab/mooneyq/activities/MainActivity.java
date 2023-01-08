@@ -1,8 +1,10 @@
-package com.pab.mooneyq;
+package com.pab.mooneyq.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.pab.mooneyq.R;
 
 public class MainActivity extends AppCompatActivity {
 

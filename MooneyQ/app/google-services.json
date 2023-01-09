@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "731687302511",
+    "project_id": "mooneyq-2b083",
+    "storage_bucket": "mooneyq-2b083.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731687302511:android:3cfa3132c016e046da649a",
+        "android_client_info": {
+          "package_name": "com.pab.mooneyq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731687302511-9ba6n1i51m10i44me8ktngtai4gupud3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtJaIfhCPAJH2LhmfDlbNr9kxP-lulN58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731687302511-9ba6n1i51m10i44me8ktngtai4gupud3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,8 +2,15 @@ package com.pab.mooneyq.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.pab.mooneyq.databinding.ActivityRegisterBinding;
 import com.pab.mooneyq.models.SubmitResponse;
 import com.pab.mooneyq.retrofit.ApiEndpoint;
@@ -20,12 +27,48 @@ public class RegisterActivity extends BaseActivity {
     private ActivityRegisterBinding binding;
     private final ApiEndpoint api = ApiService.endpoint();
 
+    private String nama, email, password;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setupListener();
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void createUser() {
+        nama = binding.etNama.getText().toString();
+        email = binding.etEmail.getText().toString();
+        password = binding.etPassword.getText().toString();
+
+        if (TextUtils.isEmpty(nama)) {
+            binding.etNama.setError("Nama tidak boleh kosong!");
+            binding.etNama.requestFocus();
+        } else if (TextUtils.isEmpty(email)) {
+            binding.etEmail.setError("Email tidak boleh kosong!");
+            binding.etEmail.requestFocus();
+        } else if (TextUtils.isEmpty(password)) {
+            binding.etPassword.setError("Kata sandi tidak boleh kosong!");
+            binding.etPassword.requestFocus();
+        } else {
+            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FancyToast.makeText(RegisterActivity.this, "Daftar akun telah berhasil!"
+                                , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    } else {
+                        FancyToast.makeText(RegisterActivity.this, "Daftar akun gagal: " + task.getException().getMessage()
+                                , FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -38,6 +81,7 @@ public class RegisterActivity extends BaseActivity {
         binding.btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                createUser();
                 if (isRequired()) {
                     showProgress(true);
                     api.register(
@@ -66,7 +110,6 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
-
         binding.tvMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

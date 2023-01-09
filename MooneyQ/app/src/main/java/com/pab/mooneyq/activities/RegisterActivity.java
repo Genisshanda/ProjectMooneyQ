@@ -77,7 +77,7 @@ public class RegisterActivity extends BaseActivity {
         showProgress(false);
     }
 
-    private void setupListener(){
+    private void setupListener() {
         binding.btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +110,7 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
+
         binding.tvMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,4 +141,5 @@ public class RegisterActivity extends BaseActivity {
             binding.btnDaftar.setEnabled(true);
         }
     }
+
 }

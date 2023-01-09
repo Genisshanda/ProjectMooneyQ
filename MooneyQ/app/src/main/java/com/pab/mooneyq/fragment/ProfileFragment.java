@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,13 +13,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pab.mooneyq.R;
-import com.pab.mooneyq.activities.LoginActivity;
 import com.pab.mooneyq.activities.MainActivity;
+import com.pab.mooneyq.activities.StartActivity;
 import com.pab.mooneyq.databinding.FragmentProfileBinding;
 import com.pab.mooneyq.retrofit.ApiEndpoint;
 import com.pab.mooneyq.retrofit.ApiService;
 import com.pab.mooneyq.sharedpreferences.PreferencesManager;
 import com.pab.mooneyq.utillities.FormatUtil;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class ProfileFragment extends Fragment {
 
@@ -72,13 +71,15 @@ public class ProfileFragment extends Fragment {
                         .navigate(R.id.action_profileFragment_to_avatarFragment);
             }
         });
+
         binding.cardLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pref.clear();
                 mAuth.signOut();
-                Toast.makeText(getContext(), "LOGOUT", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(requireActivity(), LoginActivity.class));
+                FancyToast.makeText(getContext(), "Akun berhasil keluar!"
+                        , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
+                startActivity(new Intent(requireActivity(), StartActivity.class));
                 MainActivity.instance.finish();
                 requireActivity().finish();
             }

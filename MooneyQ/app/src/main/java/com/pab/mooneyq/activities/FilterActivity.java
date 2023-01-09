@@ -17,11 +17,10 @@ import java.util.Locale;
 public class FilterActivity extends BaseActivity {
 
     private ActivityFilterBinding binding;
-    final Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     private Integer dateType = 0;
-    private String dateStart = "";
-    private String dateEnd = "";
+    private String dateStart = "", dateEnd = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +31,14 @@ public class FilterActivity extends BaseActivity {
         setupListener();
     }
 
-    private void setupListener(){
-
+    private void setupListener() {
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                 setLabel();
             }
         };
@@ -53,6 +52,7 @@ public class FilterActivity extends BaseActivity {
                 dateType = 1;
             }
         });
+
         binding.etDateEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +62,7 @@ public class FilterActivity extends BaseActivity {
                 dateType = 2;
             }
         });
+
         binding.btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +70,7 @@ public class FilterActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra("date_start", dateStart);
                     intent.putExtra("date_end", dateEnd);
-                    setResult( Activity.RESULT_OK, intent );
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
             }
@@ -86,8 +87,9 @@ public class FilterActivity extends BaseActivity {
         }
     }
 
-    private String dateFormat(Date date, String format){
+    private String dateFormat(Date date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format( date );
+        return dateFormat.format(date);
     }
+
 }

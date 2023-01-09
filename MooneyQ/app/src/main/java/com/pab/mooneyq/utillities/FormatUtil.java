@@ -1,6 +1,5 @@
 package com.pab.mooneyq.utillities;
 
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -15,7 +14,7 @@ public class FormatUtil {
         return formatter.format(number);
     }
 
-    public static String date(String string){
+    public static String date(String string) {
         try {
             SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date parser = date.parse( string );

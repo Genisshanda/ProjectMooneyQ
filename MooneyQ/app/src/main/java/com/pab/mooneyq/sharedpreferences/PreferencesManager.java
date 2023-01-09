@@ -44,7 +44,6 @@ public class PreferencesManager {
     public void clear(){
         editor.putBoolean("pref_is_login", false)
                 .apply();
-//        editor.clear()
-//                .apply();
     }
+
 }

@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity {
     private ActivityLoginBinding binding;
     private PreferencesManager pref;
     private final ApiEndpoint api = ApiService.endpoint();
+
     private String email, password;
 
     private FirebaseAuth mAuth;
@@ -93,7 +94,7 @@ public class LoginActivity extends BaseActivity {
         showProgress(false);
     }
 
-    private void setupListener(){
+    private void setupListener() {
         binding.btnMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,6 +126,7 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
         binding.tvDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +182,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void saveLogin(Login.Data data){
+    private void saveLogin(Login.Data data) {
         pref.put("pref_is_login", true);
         pref.put("pref_user_id", data.getId());
         pref.put("pref_user_name", data.getName());
@@ -188,4 +190,5 @@ public class LoginActivity extends BaseActivity {
         pref.put("pref_user_date", data.getDate());
         if (pref.getInt("pref_user_avatar") == 0 ) pref.put("pref_user_avatar", R.drawable.avatar2);
     }
+
 }

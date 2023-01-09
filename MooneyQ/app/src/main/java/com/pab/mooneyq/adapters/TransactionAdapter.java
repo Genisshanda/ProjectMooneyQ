@@ -14,15 +14,14 @@ import com.pab.mooneyq.utillities.FormatUtil;
 
 import java.util.List;
 
-
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
 
     private List<TransactionResponse.Data> dataList;
     private AdapterListener listener;
 
     public TransactionAdapter(List<TransactionResponse.Data> dataList, AdapterListener listener) {
-        this.dataList = dataList ;
-        this.listener   = listener ;
+        this.dataList = dataList;
+        this.listener   = listener;
     }
 
     @NonNull
@@ -36,12 +35,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
         final TransactionResponse.Data data = dataList.get(i);
 
-        viewHolder.binding.tvCategory.setText( data.getCategory() );
-        viewHolder.binding.tvDescription.setText( data.getDescription() );
-        viewHolder.binding.tvDate.setText( data.getDate() );
+        viewHolder.binding.tvCategory.setText(data.getCategory());
+        viewHolder.binding.tvDescription.setText(data.getDescription());
+        viewHolder.binding.tvDate.setText(data.getDate());
         viewHolder.binding.tvAmount.setText("Rp. " + FormatUtil.number(data.getAmount()) );
 
         if (data.getType().equals("IN")) viewHolder.binding.imageType.setImageResource(R.drawable.ic_in);
@@ -53,10 +51,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 listener.onClick(data);
             }
         });
+
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                listener.onLongClick( data );
+                listener.onLongClick(data);
                 return false;
             }
         });
@@ -85,4 +84,5 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         void onClick(TransactionResponse.Data data);
         void onLongClick(TransactionResponse.Data data);
     }
+
 }

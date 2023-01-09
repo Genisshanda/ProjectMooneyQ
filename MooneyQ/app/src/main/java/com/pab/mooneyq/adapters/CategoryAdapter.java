@@ -31,9 +31,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private Context context;
 
     public CategoryAdapter(Context context, List<CategoryResponse.Data> results, AdapterListener listener) {
-        this.context    = context ;
-        this.results    = results ;
-        this.listener   = listener ;
+        this.context    = context;
+        this.results    = results;
+        this.listener   = listener;
     }
 
     @NonNull
@@ -48,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final CategoryResponse.Data data = results.get(i);
-        viewHolder.binding.btnKategori.setText( data.getName() );
+        viewHolder.binding.btnKategori.setText(data.getName());
         buttonList.add(viewHolder.binding.btnKategori);
         viewHolder.binding.btnKategori.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,26 +82,27 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         void onClick(CategoryResponse.Data result);
     }
 
-    private void setButtonList(MaterialButton button){
+    private void setButtonList(MaterialButton button) {
         for( MaterialButton buttons : buttonList){
             buttons.setTextColor(context.getResources().getColor(R.color.teal_200));
             ViewCompat.setBackgroundTintList(
                     buttons, ColorStateList.valueOf(context.getResources().getColor(R.color.white))
             );
         }
+
         button.setTextColor(context.getResources().getColor(R.color.white));
         ViewCompat.setBackgroundTintList(
                 button, ColorStateList.valueOf(context.getResources().getColor(R.color.teal_700))
         );
     }
 
-    public void setButtonList(CategoryResponse.Data category){
+    public void setButtonList(CategoryResponse.Data category) {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                for( MaterialButton buttons : buttonList){
+                for( MaterialButton buttons : buttonList) {
                     Log.e("setButtonList", "" + buttons.getText());
-                    if (buttons.getText().toString().contains( category.getName() )) {
+                    if (buttons.getText().toString().contains(category.getName())) {
                         buttons.setTextColor(context.getResources().getColor(R.color.white));
                         ViewCompat.setBackgroundTintList(
                                 buttons, ColorStateList.valueOf(context.getResources().getColor(R.color.teal_700))
@@ -111,4 +112,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
         }, 500);
     }
+
 }

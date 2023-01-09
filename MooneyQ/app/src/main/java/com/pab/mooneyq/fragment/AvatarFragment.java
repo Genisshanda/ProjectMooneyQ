@@ -39,7 +39,7 @@ public class AvatarFragment extends Fragment {
         setupRecyclerView();
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         avatars.add(R.drawable.avatar1);
         avatars.add(R.drawable.avatar2);
         avatars.add(R.drawable.avatar3);
@@ -58,6 +58,8 @@ public class AvatarFragment extends Fragment {
                         .navigateUp();
             }
         });
-        binding.listAvatar.setAdapter( avatarAdapter );
+
+        binding.listAvatar.setAdapter(avatarAdapter);
     }
+
 }

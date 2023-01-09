@@ -1,5 +1,6 @@
 package com.pab.mooneyq.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -12,8 +13,11 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.pab.mooneyq.adapters.TransactionAdapter;
 import com.pab.mooneyq.databinding.ActivityMainBinding;
 import com.pab.mooneyq.databinding.HomeAvatarBinding;
@@ -46,6 +50,7 @@ public class MainActivity extends BaseActivity {
     private final ApiEndpoint api = ApiService.endpoint();
     private PreferencesManager pref;
     private TransactionAdapter transactionAdapter;
+
     private String hariIni, balance = "";
 
     private List<TransactionResponse.Data> dataList = new ArrayList<>();
@@ -68,11 +73,31 @@ public class MainActivity extends BaseActivity {
 
         setupRecyclerView();
         setupListener();
-
         getListTransaction();
         setAvatar();
 
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            System.out.println("Fetching FCM registration token failed");
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+                        System.out.println(token);
+                        FancyToast.makeText(MainActivity.this, "Perangkat anda telah berhasil diregistrasi dengan token " + token
+                                , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
+
+//                        binding.etToken.setText(token);
+                    }
+                });
     }
 
     @Override
@@ -89,7 +114,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void setupBinding(){
+    private void setupBinding() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         bindingAvatar = HomeAvatarBinding.inflate(getLayoutInflater());
         bindingBalance = HomeBalanceBinding.inflate(getLayoutInflater());
@@ -98,7 +123,7 @@ public class MainActivity extends BaseActivity {
         setContentView(binding.getRoot());
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         transactionAdapter = new TransactionAdapter(dataList, new TransactionAdapter.AdapterListener() {
             @Override
             public void onClick(TransactionResponse.Data data) {
@@ -108,7 +133,6 @@ public class MainActivity extends BaseActivity {
                                 .putExtra("user_id", pref.getInt("pref_user_id"))
                 );
             }
-
             @Override
             public void onLongClick(TransactionResponse.Data data) {
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
@@ -140,7 +164,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void setupListener(){
+    private void setupListener() {
         binding.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +197,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void getListTransaction(){
+    private void getListTransaction() {
         binding.refreshList.setRefreshing(true);
         api.listTransaction(pref.getInt("pref_user_id")).enqueue(new Callback<TransactionResponse>() {
             @Override
@@ -195,14 +219,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setBalance(TransactionResponse data) {
-        bindingBalance.textBalance.setText( "Rp " + FormatUtil.number( data.getBalance() ));
-        bindingBalance. textIn.setText( "Rp " + FormatUtil.number( data.getTotal_in() ));
-        bindingBalance.textOut.setText( "Rp " + FormatUtil.number( data.getTotal_out() ));
+        bindingBalance.textBalance.setText("Rp " + FormatUtil.number( data.getBalance()));
+        bindingBalance. textIn.setText("Rp " + FormatUtil.number( data.getTotal_in()));
+        bindingBalance.textOut.setText("Rp " + FormatUtil.number( data.getTotal_out()));
     }
 
-    private void setAvatar(){
-        bindingAvatar.tvNamaAvatar.setText( pref.getString("pref_user_name") );
-        bindingAvatar.ivAvatar.setImageResource( pref.getInt("pref_user_avatar") );
+    private void setAvatar() {
+        bindingAvatar.tvNamaAvatar.setText(pref.getString("pref_user_name"));
+        bindingAvatar.ivAvatar.setImageResource(pref.getInt("pref_user_avatar"));
     }
 
     @Override
@@ -238,7 +262,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void deleteTransaction(Integer id){
+    private void deleteTransaction(Integer id) {
         binding.refreshList.setRefreshing(true);
         api.transaction(id).enqueue(new Callback<SubmitResponse>() {
             @Override
@@ -246,7 +270,6 @@ public class MainActivity extends BaseActivity {
                 binding.refreshList.setRefreshing(false);
                 if (response.isSuccessful()) getListTransaction();
             }
-
             @Override
             public void onFailure(Call<SubmitResponse> call, Throwable t) {
                 binding.refreshList.setRefreshing(false);
@@ -260,4 +283,5 @@ public class MainActivity extends BaseActivity {
         String formatFix = hariIni + ", " + tanggal;
         binding.tvTanggal.setText(formatFix);
     }
+
 }

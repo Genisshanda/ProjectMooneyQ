@@ -3,7 +3,6 @@ package com.pab.mooneyq.activities;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.core.view.ViewCompat;
 
@@ -24,15 +23,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InsertActivity extends BaseActivity {
+
     private final String TAG = InsertActivity.class.getSimpleName();
 
     private ActivityInsertBinding binding;
     private final ApiEndpoint api = ApiService.endpoint();
+
     private CategoryAdapter categoryAdapter;
     private List<CategoryResponse.Data> categories = new ArrayList<>();
+
     private Integer userId;
-    private String categoryId = "";
-    private String type = "";
+    private String categoryId = "", type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +60,23 @@ public class InsertActivity extends BaseActivity {
         getListCategory();
     }
 
-    private void setupView(){
+    private void setupView() {
         getSupportActionBar().hide();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         categoryAdapter = new CategoryAdapter(InsertActivity.this, categories, new CategoryAdapter.AdapterListener() {
             @Override
             public void onClick(CategoryResponse.Data result) {
                 categoryId = result.getId();
             }
         });
-        binding.listCategory.setAdapter( categoryAdapter );
+
+        binding.listCategory.setAdapter(categoryAdapter);
     }
 
-    private void setupListener(){
+    private void setupListener() {
         binding.btnIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,13 +84,16 @@ public class InsertActivity extends BaseActivity {
                 ViewCompat.setBackgroundTintList(
                         binding.btnIn, ColorStateList.valueOf(getResources().getColor(R.color.teal_700))
                 );
+
                 binding.btnOut.setTextColor(getResources().getColor(R.color.teal_200));
                 ViewCompat.setBackgroundTintList(
                         binding.btnOut, ColorStateList.valueOf(getResources().getColor(R.color.white))
                 );
+
                 type = "IN";
             }
         });
+
         binding.btnOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,13 +101,16 @@ public class InsertActivity extends BaseActivity {
                 ViewCompat.setBackgroundTintList(
                         binding.btnOut, ColorStateList.valueOf(getResources().getColor(R.color.teal_700))
                 );
+
                 binding.btnIn.setTextColor(getResources().getColor(R.color.teal_200));
                 ViewCompat.setBackgroundTintList(
                         binding.btnIn, ColorStateList.valueOf(getResources().getColor(R.color.white))
                 );
+
                 type = "OUT";
             }
         });
+
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,7 +132,6 @@ public class InsertActivity extends BaseActivity {
                                 onBackPressed();
                             }
                         }
-
                         @Override
                         public void onFailure(Call<SubmitResponse> call, Throwable t) {
                             binding.buttonSave.setEnabled( true );
@@ -135,13 +142,13 @@ public class InsertActivity extends BaseActivity {
         });
     }
 
-    private void getListCategory(){
+    private void getListCategory() {
         api.listCategory().enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 if (response.isSuccessful()) {
                     categories = response.body().getData();
-                    categoryAdapter.setData( categories );
+                    categoryAdapter.setData(categories);
                 }
             }
             @Override
@@ -169,4 +176,5 @@ public class InsertActivity extends BaseActivity {
         }
         return true;
     }
+
 }

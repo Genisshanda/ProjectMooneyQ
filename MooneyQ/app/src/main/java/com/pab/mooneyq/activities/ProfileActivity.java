@@ -1,10 +1,8 @@
 package com.pab.mooneyq.activities;
 
-
 import android.os.Bundle;
 
 import com.pab.mooneyq.databinding.ActivityProfileBinding;
-
 
 public class ProfileActivity extends BaseActivity {
 
@@ -16,4 +14,5 @@ public class ProfileActivity extends BaseActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
     }
+
 }

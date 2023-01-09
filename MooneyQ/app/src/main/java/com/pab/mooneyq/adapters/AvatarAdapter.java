@@ -17,8 +17,8 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder
     private AdapterListener listener;
 
     public AvatarAdapter(List<Integer> avatars, AdapterListener listener) {
-        this.avatars    = avatars ;
-        this.listener   = listener ;
+        this.avatars    = avatars;
+        this.listener   = listener;
     }
 
     @NonNull
@@ -62,4 +62,5 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.ViewHolder
     public interface AdapterListener {
         void onClick(Integer avatar);
     }
+
 }

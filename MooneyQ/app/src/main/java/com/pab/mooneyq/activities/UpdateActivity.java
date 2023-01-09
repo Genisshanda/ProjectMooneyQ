@@ -34,6 +34,7 @@ public class UpdateActivity extends BaseActivity {
     private final ApiEndpoint api = ApiService.endpoint();
     private CategoryAdapter categoryAdapter;
     private List<CategoryResponse.Data> categories = new ArrayList<>();
+
     private Integer categoryId = 0;
     private String type = "";
 
@@ -52,7 +53,7 @@ public class UpdateActivity extends BaseActivity {
         getListCategory();
     }
 
-    private void setupView(){
+    private void setupView() {
         switch (transaction.getType()) {
             case "IN": type = "IN"; buttonType(binding.btnIn);
                 break;
@@ -64,17 +65,18 @@ public class UpdateActivity extends BaseActivity {
         binding.buttonSave.setText("Simpan perubahan");
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         categoryAdapter = new CategoryAdapter(UpdateActivity.this, categories, new CategoryAdapter.AdapterListener() {
             @Override
             public void onClick(CategoryResponse.Data result) {
                 categoryId = Integer.parseInt(result.getId());
             }
         });
-        binding.listCategory.setAdapter( categoryAdapter );
+
+        binding.listCategory.setAdapter(categoryAdapter);
     }
 
-    private void buttonType(MaterialButton buttonSelected){
+    private void buttonType(MaterialButton buttonSelected) {
         List<MaterialButton> buttonList = new ArrayList<>();
         buttonList.add( binding.btnIn );
         buttonList.add( binding.btnOut );
@@ -82,13 +84,14 @@ public class UpdateActivity extends BaseActivity {
             button.setTextColor(getResources().getColor(R.color.teal_200));
             ViewCompat.setBackgroundTintList( button, ColorStateList.valueOf(getResources().getColor(R.color.white)) );
         }
+
         buttonSelected.setTextColor(getResources().getColor(R.color.white));
         ViewCompat.setBackgroundTintList(
                 buttonSelected, ColorStateList.valueOf(getResources().getColor(R.color.teal_700))
         );
     }
 
-    private void setupListener(){
+    private void setupListener() {
         binding.btnIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +99,7 @@ public class UpdateActivity extends BaseActivity {
                 type = "IN";
             }
         });
+
         binding.btnOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +107,7 @@ public class UpdateActivity extends BaseActivity {
                 type = "OUT";
             }
         });
+
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
             @Override
@@ -124,7 +129,7 @@ public class UpdateActivity extends BaseActivity {
         });
     }
 
-    private void getListCategory(){
+    private void getListCategory() {
         api.listCategory().enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
@@ -146,7 +151,7 @@ public class UpdateActivity extends BaseActivity {
         });
     }
 
-    private void updateTransaction(TransactionRequest transactionRequest){
+    private void updateTransaction(TransactionRequest transactionRequest) {
         api.transaction(transactionRequest).enqueue(new Callback<SubmitResponse>() {
             @Override
             public void onResponse(Call<SubmitResponse> call, Response<SubmitResponse> response) {
@@ -163,4 +168,5 @@ public class UpdateActivity extends BaseActivity {
             }
         });
     }
+
 }
